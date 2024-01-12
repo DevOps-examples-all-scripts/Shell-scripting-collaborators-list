@@ -11,6 +11,8 @@ TOKEN=$token
 REPO_OWNER=$1
 REPO_NAME=$2
 
+helper()
+
 # Function to make a GET request to the GitHub API
 function github_api_get {
     local endpoint="$1"
@@ -25,7 +27,8 @@ function list_users_with_read_access {
     local endpoint="repos/${REPO_OWNER}/${REPO_NAME}/collaborators"
 
     # Fetch the list of collaborators on the repository
-    collaborators="$(github_api_get "$endpoint" | jq -r '.[] | select(.permissions.pull == true) | .login')"
+    # collaborators="$(github_api_get "$endpoint" | jq -r '.[] | select(.permissions.pull == true) | .login')"
+    collaborators="$(github_api_get "$endpoint")"
 
     # Display the list of collaborators with read access
     if [[ -z "$collaborators" ]]; then
@@ -34,6 +37,13 @@ function list_users_with_read_access {
         echo "Users with read access to ${REPO_OWNER}/${REPO_NAME}:"
         echo "$collaborators"
     fi
+}
+
+# helper function
+function helper{
+    expected_cmd_args = 2
+    if [ $# -ne $expected_cmd_args ]; then
+        echo "please execute the scripts with required cmd args"
 }
 
 # Main script
